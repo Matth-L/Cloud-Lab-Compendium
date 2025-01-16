@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Résultat IMC</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        p {
+            font-size: 1.2em;
+            color: #555;
+        }
+
+        #bmi-value {
+            font-weight: bold;
+            color: #000;
+        }
+
+        #bmi-category {
+            font-size: 1.2em;
+            color: #555;
+        }
+
+        .button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 1em;
+            color: #fff;
+            background-color: #007BFF;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Votre Indice de Masse Corporelle (IMC)</h1>
+    <p>
+        Votre IMC est :
+        <span id="bmi-value"></span>
+    </p>
+    <p id="bmi-category"></p>
+    <a href="/" class="button">Retour</a>
+
+    <script>
+        // Récupérer le paramètre 'bmi' de l'URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const bmi = parseFloat(urlParams.get('bmi'));
+
+        // Afficher la valeur de l'IMC
+        document.getElementById('bmi-value').textContent = bmi;
+
+        // Déterminer la catégorie de l'IMC
+        let category = '';
+        if (bmi < 18.5) {
+            category = 'Poids insuffisant';
+        } else if (bmi >= 18.5 && bmi < 24.9) {
+            category = 'Poids normal';
+        } else if (bmi >= 25 && bmi < 29.9) {
+            category = 'Surpoids';
+        } else {
+            category = 'Obésité';
+        }
+
+        // Afficher la catégorie de l'IMC
+        document.getElementById('bmi-category').textContent = category;
+    </script>
+</body>
+
+</html>
