@@ -15,25 +15,31 @@
             height: 100vh;
             margin: 0;
             background-color: #f0f0f0;
+            color: #333;
         }
 
         h1 {
             color: #333;
+            margin-bottom: 20px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
         }
 
         p {
             font-size: 1.2em;
             color: #555;
+            margin: 10px 0;
         }
 
-        #bmi-value {
+        #imc-value {
             font-weight: bold;
             color: #000;
+            font-size: 1.5em;
+            margin: 10px 0;
         }
 
-        #bmi-category {
+        #imc-category {
             font-size: 1.2em;
-            color: #555;
+            margin: 10px 0;
         }
 
         .button {
@@ -46,46 +52,79 @@
             border-radius: 5px;
             cursor: pointer;
             text-decoration: none;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
         }
 
         .button:hover {
             background-color: #0056b3;
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .insuffisant {
+            color: blue;
+        }
+
+        .normal {
+            color: green;
+        }
+
+        .surpoids {
+            color: orange;
+        }
+
+        .obesite {
+            color: red;
         }
     </style>
 </head>
 
 <body>
+
     <h1>Votre Indice de Masse Corporelle (IMC)</h1>
-    <p>
-        Votre IMC est :
-        <span id="bmi-value"></span>
-    </p>
-    <p id="bmi-category"></p>
+    <p>Votre IMC est : <span id="imc-value"></span></p>
+    <p id="imc-category"></p>
     <a href="/" class="button">Retour</a>
 
     <script>
-        // Récupérer le paramètre 'bmi' de l'URL
+
+        // récupérer la valeur dans l'url
         const urlParams = new URLSearchParams(window.location.search);
-        const bmi = parseFloat(urlParams.get('bmi'));
+        const imcParam = urlParams.get('imc');
 
-        // Afficher la valeur de l'IMC
-        document.getElementById('bmi-value').textContent = bmi;
+        // vérification de la valeur récupérée
+        const imc =
+            imcParam ? parseFloat(imcParam.replace(/[^0-9.]/g, '')) : NaN;
 
-        // Déterminer la catégorie de l'IMC
-        let category = '';
-        if (bmi < 18.5) {
-            category = 'Poids insuffisant';
-        } else if (bmi >= 18.5 && bmi < 24.9) {
-            category = 'Poids normal';
-        } else if (bmi >= 25 && bmi < 29.9) {
-            category = 'Surpoids';
+
+        if (!isNaN(imc) && typeof imc === 'number') {
+            document.getElementById('imc-value').textContent = imc;
+
+            // Détermine la catégorie de l'IMC
+            let categorie = '';
+            if (imc < 18.5) {
+                categorie = 'Poids insuffisant';
+                document.getElementById('imc-category').className = 'insuffisant';
+            } else if (imc < 24.9) {
+                categorie = 'Poids normal';
+                document.getElementById('imc-category').className = 'normal';
+            } else if (imc < 29.9) {
+                categorie = 'Surpoids';
+                document.getElementById('imc-category').className = 'surpoids';
+            } else {
+                categorie = 'Obésité';
+                document.getElementById('imc-category').className = 'obesite';
+            }
+
+            // Affiche la catégorie de l'IMC
+            document.getElementById('imc-category').textContent = categorie;
         } else {
-            category = 'Obésité';
+            // Affiche un message d'erreur si la valeur de l'IMC est invalide
+            document.getElementById('imc-value').textContent = 'Valeur invalide';
+            document.getElementById('imc-category').textContent = '';
         }
-
-        // Afficher la catégorie de l'IMC
-        document.getElementById('bmi-category').textContent = category;
     </script>
+
 </body>
 
 </html>
