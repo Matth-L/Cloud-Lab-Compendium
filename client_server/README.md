@@ -1,18 +1,19 @@
-# Simple HTTP communication
+# 🌐 Simple HTTP Communication
 
-In this question, we were asked to implement a communication between a client and a server using sockets in python.
+In this question, we were asked to implement communication between a client and a server using **sockets** in Python.  
 
-The server is in the 'server.py' file and the client is in the 'client.py' file.
+- 🖥️ The server implementation is in the `server.py` file.  
+- 📡 The client implementation is in the `client.py` file.  
 
-To run the server, run the following command in the terminal:
-```python
+To run the server, use the following command in the terminal:  
+```bash
 python3 server.py
 ```
-The server will be running on the port 8080, it will be available at the address 'http://localhost:8080/'.
+The server will run on port **8080** and will be available at the address:  
+`http://localhost:8080/`
 
-To run the client, run the following command in the terminal:
-```python
+To run the client, use the following command in the terminal:  
+```bash
 python3 client.py
 ```
-
-The client will fetch data from the server and from 2 other websites to prove that it is working.
+The client will fetch data from the server and from **two other websites** to demonstrate that it is functioning correctly.
