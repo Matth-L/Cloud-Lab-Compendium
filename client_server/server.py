@@ -10,18 +10,21 @@ def received(socket_client):
     print(f"Requête reçue:\n{requete}")
 
     reponse = """HTTP/1.0 200 OK
-Content-Type: text/html
+    Content-Type: text/html; charset=utf-8
 
-<html>
-<head>
-    <title>Question 4 : serveur </title>
-</head>
-<body>
-    <h1>Exercice 2 _ Serveur HTTP Simple : </h1>
-    <p> Ceci est un paragraphe disponible sur l'adresse localhost:8080</p>
-</body>
-</html>
-"""
+    <!DOCTYPE HTML>
+
+    <html>
+    <head>
+        <title>Question 4 : serveur </title>
+    </head>
+    <body>
+        <h1>Exercice 2 _ Serveur HTTP Simple : </h1>
+        <p> Ceci est un paragraphe disponible sur l'adresse localhost:8080</p>
+    </body>
+    </html>
+    """
+
     socket_client.sendall(reponse.encode('utf-8'))
     socket_client.close()
 

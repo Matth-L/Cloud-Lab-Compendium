@@ -19,12 +19,11 @@ def get(host, port, path):
     s.close()
 
     # on ne garde pas l'entete
-    header, body = response.split(b"\r\n\r\n", 1)
-    return body.decode('utf-8')
+    return response.decode('utf-8')
 
 if __name__ == "__main__":
     hosts_ports = [
-        ("127.0.0.1", 80),
+        ("127.0.0.1", 8080),
         ("httpforever.com", 80),
         ("example.com", 80),
     ]
