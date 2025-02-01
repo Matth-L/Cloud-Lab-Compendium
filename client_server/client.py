@@ -1,9 +1,12 @@
 import socket
+import ssl
 
-def get(host, port, path):
-
+def get(host, port, path, use_https=False):
     # socket
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    if use_https:
+        context = ssl.create_default_context()
+        s = context.wrap_socket(s, server_hostname=host)
     s.connect((host, port))
 
     # requête http
@@ -23,15 +26,15 @@ def get(host, port, path):
 
 if __name__ == "__main__":
     hosts_ports = [
-        ("127.0.0.1", 8080),
-        ("httpforever.com", 80),
-        ("example.com", 80),
+        ("127.0.0.1", 8080, False),
+        ("example.com", 80, False),
+        ("google.ca", 443, True),
     ]
 
     path = "/"
-    for host, port in hosts_ports:
+    for host, port, use_https in hosts_ports:
         try:
-            html_content = get(host, port, path)
+            html_content = get(host, port, path, use_https)
             print(f"Contenu de {host}:")
             print(html_content)
         except Exception as e:
