@@ -3,18 +3,19 @@ import os
 
 def received(socket_client):
     """
-    Reçoit une requête et envoie une page HTML au client
+    Reçoit une requête et envoie une page HTML au client.
+    
+    @param socket_client: Le socket client connecté
     """
-
-    # recevoir la requête
+    # Recevoir la requête
     requete = socket_client.recv(1024).decode('utf-8')
     print(f"Requête reçue:\n{requete}")
 
-    # Extraction
+    # Extraction de la première ligne de la requête
     first_line = requete.split('\r\n')[0]
     parts = first_line.split(' ')
 
-    # test validité
+    # Vérification de la validité de la requête
     if len(parts) < 2:
         response = "HTTP/1.0 400 Bad Request\r\n\r\n"
         socket_client.sendall(response.encode('utf-8'))
@@ -53,12 +54,16 @@ def received(socket_client):
                         </html>
                     """
 
+    # Envoyer la réponse au client
     socket_client.sendall(response.encode('utf-8'))
     socket_client.close()
 
 def start(hote, port):
     """
-    Crée un serveur HTTP sur le port donné
+    Crée un serveur HTTP sur le port donné.
+    
+    @param hote: L'adresse hôte du serveur
+    @param port: Le port sur lequel le serveur écoute
     """
     # Création du socket
     socket_serveur = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
