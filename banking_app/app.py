@@ -21,7 +21,7 @@ def init_db():
     """
     Initialise la base de données banque.db
     """
-    conn = sqlite3.connect(DB_PATH)
+    conn = sqlite3.connect('banque.db')
     cursor = conn.cursor()
     
     cursor.execute('''
@@ -40,7 +40,7 @@ def existe_compte(nom:str) -> bool:
     """
     Vérifie si un compte existe déjà.
     """
-    conn = sqlite3.connect(DB_PATH)
+    conn = sqlite3.connect('banque.db')
     cursor = conn.cursor()
     cursor.execute('SELECT * FROM comptes WHERE nom = ?', (nom,))
     compte = cursor.fetchone()
@@ -53,7 +53,7 @@ def creer_compte(nom : str) -> Compte:
     :param nom: nom du compte
     :return: Compte -> OK si le compte a été créé, sinon le code d'erreur
     """
-    conn = sqlite3.connect(DB_PATH)
+    conn = sqlite3.connect('banque.db')
     cursor = conn.cursor()
     ret = None
 
@@ -78,7 +78,7 @@ def effacer_compte(nom:str) -> Compte:
     if not existe_compte(nom):
         return Compte.COMPTE_NON_TROUVE
 
-    conn = sqlite3.connect(DB_PATH)
+    conn = sqlite3.connect('banque.db')
     cursor = conn.cursor()
     cursor.execute('DELETE FROM comptes WHERE nom = ?', (nom,))
     conn.commit()
@@ -95,7 +95,7 @@ def deposer_argent(nom:str, montant:float) -> Compte:
     if not existe_compte(nom):
         return Compte.COMPTE_NON_TROUVE
 
-    conn = sqlite3.connect(DB_PATH)
+    conn = sqlite3.connect('banque.db')
     cursor = conn.cursor()
     cursor.execute('UPDATE comptes SET solde = solde + ? WHERE nom = ?', (montant, nom))
     conn.commit()
@@ -113,7 +113,7 @@ def retirer_argent(nom:str, montant:float) -> Compte:
     if not existe_compte(nom):
         return Compte.COMPTE_NON_TROUVE
 
-    conn = sqlite3.connect(DB_PATH)
+    conn = sqlite3.connect('banque.db')
     cursor = conn.cursor()
     
     cursor.execute('SELECT solde FROM comptes WHERE nom = ?', (nom,))
@@ -134,7 +134,7 @@ def consulter_compte(nom:str) -> float:
     """
     Récupère le solde du compte spécifié.
     """
-    conn = sqlite3.connect(DB_PATH)
+    conn = sqlite3.connect('banque.db')
 
     if not existe_compte(nom):
         return None
@@ -145,6 +145,17 @@ def consulter_compte(nom:str) -> float:
 
     conn.close()
     return compte[0]
+
+def voir_tous_comptes() -> list:
+    """
+    Récupère la liste de tous les comptes.
+    """
+    conn = sqlite3.connect('banque.db')
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM comptes')
+    comptes = cursor.fetchall()
+    conn.close()
+    return comptes
 
 @app.route('/')
 def accueil():
@@ -210,6 +221,11 @@ def consulter_route():
         else:
             message = f"Solde du compte {nom}: {solde} €"
     return render_template('consulter.html', message=message)
+
+@app.route('/voir_comptes')
+def voir_comptes_route():
+    comptes = voir_tous_comptes()
+    return render_template('voir_comptes.html', comptes=comptes)
 
 if __name__ == '__main__':
     init_db()
