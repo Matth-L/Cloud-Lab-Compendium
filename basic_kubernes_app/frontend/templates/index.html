@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Items</title>
+</head>
+
+<body>
+    <h1>Items</h1>
+    <a href="{{ url_for('create') }}">Create New Item</a>
+    <ul>
+        {% for item in items %}
+        <li>{{ item.name }} - {{ item.description }}
+            <a href="{{ url_for('update', id=item.id) }}">Update</a>
+            <form action="{{ url_for('delete', id=item.id) }}" method="post" style="display:inline;">
+                <button type="submit">Delete</button>
+            </form>
+        </li>
+        {% endfor %}
+    </ul>
+</body>
+
+</html>
